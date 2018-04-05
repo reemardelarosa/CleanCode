@@ -42,7 +42,7 @@
 ### Maximize signal to noise ratio.
 
 #### Signal
-> Logic the folows the TED rule:
+> Logic that folows the TED rule:
 - **T**erse - should not excessively wordy.
 - **E**xpressive - clear on what code is trying to do
 - **D**o one thing - clear and one thing responsibility.
