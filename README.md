@@ -61,10 +61,22 @@
 
 #### Why is signal to noise ration so important?
 1. Our brain is the compiler.
+> We can process 7 items
+2. The mess builds quietly.
+3. Copy and paste is often a design problem.
 
 ### Self-documenting.
+> Understanding the original programmer's intent is the most difficult prooblem.
 
+> Well written code is self-documenting.
+
+1. CLEAR INTENT
+2. LAYERS OF ABSTRACTIONS
+3. FORMAT FOR RELIABILITY
+4. FAVOR CODE OVER COMMENTS
 ## Naming
+
+
 ## Conditionals
 ## Functions
 ## Classes
