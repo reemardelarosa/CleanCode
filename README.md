@@ -146,12 +146,12 @@
 
 ### Boolean Comparison
 - Dirty
-```
+```c#
 if (loggeIn == true) {}
 ```
 - Clean
 
-```
+```c#
 if (loggedIn) {}
 ```
 
@@ -159,14 +159,14 @@ if (loggedIn) {}
 
 ### Boolean Assignment
 - Dirty
-```
+```c#
 bool goingToChipotleForLunch;
 if ( cashInWallet > 6.00) { goingToChipotleForLunch = true; }
 else { goingToChipotleForLunch = false }
 ```
 - Clean
 
-```
+```c#
 bool goingToChipotleForLunch = cashInWallet > 6.00;
 ```
 
@@ -179,19 +179,19 @@ bool goingToChipotleForLunch = cashInWallet > 6.00;
 > Don't be Anti-negative
 > In other words, use positive conditionals.
 - Dirty
-```
+```c#
 if (!isNotLoggedIn)
 ```
 - Clean
 
-```
+```c#
 if (loggedIn)
 ```
 
 ### Ternary Elegance
 
 - Dirty
-```
+```c#
 int registrationFee;
 
 if ( isSpeaker) {
@@ -202,32 +202,32 @@ if ( isSpeaker) {
 ```
 - Clean
 
-```
+```c#
 int registrationFee = isSpeaker ? 0 : 50;
 ```
 
 ### Stringly Typed
 - Dirty
-```
+```c#
 if (employeeType == "manager")
 ```
 - Clean
 
-```
+```c#
 if (employee.Type === EmployeeType.Manager)
 ```
 
 ### Magic Numbers
 
 - Dirty
-```
+```c#
 if (age > 21) {}
 
 if (status === 2) {}
 ```
 - Clean
 
-```
+```c#
 const int legalDrinkingAge = 21;
 if (age > legalDrinkingAge) { // body here}
 
@@ -236,7 +236,7 @@ if (status === Status.Active) {}
 
 ### Complex Conditionals
 - Dirty
-```
+```c#
 if (car.Year > 1980
     && (car.Make === 'Ford' || car.Make === 'Chevrolet')
     && car.Odometer < 100000
@@ -259,7 +259,7 @@ if ((fileExtension === 'mp4' ||
 ```
 - Clean
 
-```
+```c#
 // Intermediate Variable
 bool eligibleForPension = employee.Age > 55
     && employee.YearsEMployed > 10 && employee.isRetired === true;
@@ -278,7 +278,7 @@ private bool ValidFileRequest ( string fileExtension, bool isActiveFile, bool is
 
 ### Polymorphism vs Enums
 - Dirty
-```
+```c#
 private void LoginUser(User user) 
 {
     switch (user.Status)
@@ -297,7 +297,7 @@ private void LoginUser(User user)
 ```
 - Clean
 
-```
+```c#
 private void LoginUser(User user)
 {
     user.Login();
@@ -339,7 +339,7 @@ private class LockedUser : User
 
 ### Be Declarative
 - Dirty
-```
+```c#
 List<User> matchingUsers = new List<User>();
 
 foreach (var user in users)
@@ -355,7 +355,7 @@ foreach (var user in users)
 ```
 - Clean
 
-```
+```c#
 return users
     .Where(u => u.AccountBalance < minimumAccountBalance)
     .Where(u => u.Status == Status.Active)
@@ -364,7 +364,7 @@ return users
 
 ### Table Driven Methods
 - Dirty
-```
+```c#
 if (age < 20)
 {
     return 345.60;
@@ -391,11 +391,395 @@ else if (age < 50)
 | 2 | 30 | 420.50 |
 | 3 | 40 | 476.38 |
 | 4 | 50 | 516.25 |
-```
+```c#
 return Repository.GetInsuranceRate(age)
 ```
 
 ## Functions
+### Method vs Function
+- Both functions and methods are pieces of code, called by name.4
+- Core difference: Methods are associated with an object.
+
+### When to Create Function
+- Duplication
+- Indentation
+- Unclear intent
+- `>`1task
+
+### Avoid Duplication
+- Don't repeat yourself
+- Code is liability
+- Less is more
+
+### Excessive Indentation Overview
+> Arrow Method
+
+> 3 `f`'s, brain limit
+
+> Solution
+1. Extract
+2. Return Early
+3. Fail Fast
+
+### Extract Method
+- Before
+```c#
+if
+    if
+        while
+            do
+            some
+            complicated
+            things
+        end while
+    end if
+end if
+```
+
+- After
+```c#
+if
+    if
+        doComplicatedThing()
+    end if
+end if
+
+doComplicatedThing()
+{
+    while
+        do
+        some
+        complicated
+        things
+    end while
+}
+
+```
+
+### Return Early
+- Before
+```c#
+private bool ValidUsername(string username)
+{
+    bool isValid = false;
+    const int MinUsernameLength = 6;
+    if (userName.Length >= MinUsernameLength)
+    {
+        const int MaxUsernameLength = 25;
+        if (userName.Length >= MaxUsernameLength)
+        {
+            bool isAlphaNumeric = username.All(Char.IsLetterOrDigit);
+            if (isAlphaNumeric)
+            {
+                if (!ContainsCurseWords(username))
+                {
+                    isValid = IsUniqueUserName(username);
+                }
+            }
+
+        }
+    }
+
+    return isValid;
+}
+```
+
+- After
+```c#
+private bool ValidUsername(string username)
+{
+    const int MinUsernameLength = 6;
+    if (userName.Length >= MinUsernameLength) return false;
+
+    const int MaxUsernameLength = 25;
+    if (userName.Length >= MaxUsernameLength) return false;
+
+    bool isAlphaNumeric = username.All(Char.IsLetterOrDigit) return false;
+    if (isAlphaNumeric) return false;
+
+    if (!ContainsCurseWords(username)) return false;
+
+    return IsUniqueUserName(username);
+}
+
+```
+
+### Fail Fast
+- Before
+```c#
+public void RegisterUser(string username, string password)
+{
+    if (!string.isNullOrWhiteSpace(username))
+    {
+        if (!string.isNullOrWhiteSpace(password))
+        {
+            // register user here
+        }
+        else
+        {
+            throw new ArgumentException("Username is required");
+        }
+    }
+    else
+    {
+        throw new ArgumentException("Password is required");
+    }
+}
+
+private void LoginUser(User user) 
+{
+    switch (user.Status)
+    {
+        case Status.Active:
+            // active user's logic
+            break;
+        case Status.Inactive:
+            // inactive user's logic
+            break;
+        case Status.Locked:
+            // locked user's logic
+            break;
+    }
+}
+```
+
+- After
+```c#
+public void RegisterUser(string username, string password)
+{
+    if (string.isNullOrWhiteSpace(username)) throw new ArgumentException("Username is required");
+    if (string.isNullOrWhiteSpace(password)) throw new ArgumentException("Password is required");
+
+    // register user here
+}
+
+private void LoginUser(User user) 
+{
+    switch (user.Status)
+    {
+        case Status.Active:
+            // active user's logic
+            break;
+        case Status.Inactive:
+            // inactive user's logic
+            break;
+        case Status.Locked:
+            // locked user's logic
+            break;
+        default:
+            throw new ApplicationException("Unknown user status: " + user.Status);
+    }
+}
+
+```
+### Convey Intent
+- Before
+```c#
+// check for Vlid file extensions. Confirm admin or active
+if ((fileExtension === 'mp4' ||
+    fileExtension === 'mpg' ||
+    fileExtension === 'avi)
+    && (isAdmin || isActiveFile)) {}
+```
+
+- After
+```c#
+if (ValidFileRequest(fileExtension, active, admin))
+
+private bool ValidFileRequest(string fileExtension, bool isActiveFile, bool isAdmin)
+{
+    var validFileExtension = new List<string> { "mp4", "mpg", "avi" };
+
+    bool validFileType = validFileExtensions.Contains(fieExtension);
+    bool userIsAllowedToVIewFile = isActiveFile || is Admin;
+
+    return validFileType && userIsAllowedToViewFile;
+}
+```
+### Do One Thing
+1. Aids the reader
+2. Promotes reuse
+3. Eases naming and testing
+4. Avoid Side Effects
+
+### Mayfly Variables
+1. Initialize Variables just-in-time
+2. Do one thing
+3. 
+
+- Before
+```c++
+private void MayFly()
+{
+    bool a = false;
+    int b = 0;
+    string c = string.Empty;
+    bool d = true;
+    // ...
+
+    a = SomethingIsTrue();
+
+    if (a)
+    {
+        if (c.Length > b)
+        {
+            // ...
+
+            d = c.Substring(0,3) == b.ToString();
+        }
+    }
+}
+
+```
+
+- After
+```c#
+private void MayFly()
+{
+    bool a = false;
+    // ...
+
+    a = SomethingIsTrue();
+
+    if (a)
+    {
+        int b = 0;
+        string c = string.Empty;
+        if (c.Length > b)
+        {
+            bool d = true;
+            // ...
+
+            d = c.Substring(0,3) == b.ToString();
+        }
+    }
+}
+
+```
+### Parameters
+1. Strive 0-2 parameters
+2. Easer to understand
+3. Easier to test
+4. Helps assure function does one thing
+
+- Before
+```c#
+public void SaveUser(User user, bool sendEmail, int emailFormat, bool printReport, bool sendBill)
+
+```
+
+- After
+```c#
+public void SaveUser(User user)
+public void SendEmail(bool sendEmail, int emailFormat)
+public void PrintReport(bool printReport)
+public void SendBill(bool sendBill))
+
+```
+
+#### Watch for Flag Arguments
+1. A sign the function is doing two things
+    - Before
+    ```c#
+    private void SaveUser(User user, bool emailUser)
+    {
+        // save user
+        if (emailUser)
+        {
+            // email user
+        }
+    }
+
+    ```
+
+    - After
+    ```c#
+    private void SaveUser(User user) {
+        // save user
+    }
+
+    private void EmailUser(User user)
+    {
+        // email user
+    }
+    ```
+
+
+### What's too long?
+1. Whitespace & Comments
+2. Scrolling required
+3. Naming Issues
+4. Multiple Conditonals
+5. Hard to digest
+
+> Clean code
+
+>- Rarely be over 20 lines
+>- Hardly ever over 100 lines
+>- No more than 3 parameters
+
+
+### Exceptions
+1. Unrecoverable
+    - Null Reference
+    - File not found
+    - Access denied
+2. Recoverable
+    - Retry connection
+    - Try different file
+    - Wait and try again
+3. Ignorable
+    - Logging Click
+
+#### Dirty
+```c#
+try
+{
+    RegisterSpeaker
+}
+catch(Exception e)
+{
+    LogError(e);
+}
+EmailSpeaker()
+
+try
+{
+    // many
+    // lines
+    // of
+    // complicated
+    // logic
+}
+catch (ArgumentOutOfRangeException)
+{
+    // do somehthing here
+}
+```
+#### Clean
+```c#
+RegisterSpeaker();
+EmailSpeaker();
+
+try
+{
+    SaveThePlanet();
+}
+catch (ArgumentOutOfRangeException)
+{
+    // do something here
+}
+
+private void SaveThePlanet()
+{
+    // many
+    // lines
+    // of
+    // complicated
+    // logic
+}
+```
+
 ## Classes
 ## Comments
 ## Demo
