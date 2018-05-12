@@ -74,10 +74,84 @@
 2. LAYERS OF ABSTRACTIONS
 3. FORMAT FOR RELIABILITY
 4. FAVOR CODE OVER COMMENTS
-## Naming
 
+## Naming
+### Classes
+| Dirty | Clean |
+| :-------------: |:-------------:|
+| WebSiteBO | User |
+| Utility | Account |
+| Common | QueryBuilder |
+| MyFunctions | ProductRepository |
+
+#### Guidelines
+- Noun
+- Be specific
+- Single Responsibility
+- Avoid Generic Suffixes
+
+### The Method Name Should Say It All
+
+| Say what | Clean |
+|---|---|
+| Get | GetRegisteredUsers |
+| Process | IsValidSubmission |
+|Pending | ImportDocument |
+| Dolt | SendEmail |
+
+### Naming Warning Sign
+#### Watch out for
+- And
+- If
+- Or
+
+#### Watch for Side Effects
+- CheckPassword shouldn't log users out.
+- ValidateSubmission shouldn't save.
+- GetUser shouldn't create their session.
+- ChargeCreditCard shouldn't send emails.
+
+### Avd Abbr
+
+- It's not the 80's
+- No Standard
+- We talk about code
+
+### Booleans
+ . Booleans names should sound like true/false questions.
+
+| *Dirty* | _Clean_ |
+|-----|-----|
+| open | isOpen |
+| start | done |
+| status | isActive |
+| login | loggedIn |
+| ```if (login) {}``` | ```if (loggedIn) {}``` |
+
+### Be symmetrical
+> When dealing with states that toggle, consistently use matching pairs.
+
+| _Dirty_ | _Clean_ |
+|:-----:|:----:|
+| on/disable | on/off |
+| quick/slow | fast/slow |
+| lock/open | lock/unlock |
+| slow/max | min/max |
 
 ## Conditionals
+### Boolean Comparison
+
+
+### Boolean Assignment
+### Positive Conditionals
+### Ternary Elegance
+### Stringly Typed
+### Magic Numbers
+### Complex Conditionals
+### Polymorphism vs Enums
+### Be Declarative
+### Table Driven Methods
+
 ## Functions
 ## Classes
 ## Comments
