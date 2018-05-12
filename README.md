@@ -139,18 +139,261 @@
 | slow/max | min/max |
 
 ## Conditionals
+1. Clear intent
+2. Use the right tool
+3. Bite-size logic
+4. Sometimes code isn't the answer
+
 ### Boolean Comparison
+- Dirty
+```
+if (loggeIn == true) {}
+```
+- Clean
+
+```
+if (loggedIn) {}
+```
+
 
 
 ### Boolean Assignment
+- Dirty
+```
+bool goingToChipotleForLunch;
+if ( cashInWallet > 6.00) { goingToChipotleForLunch = true; }
+else { goingToChipotleForLunch = false }
+```
+- Clean
+
+```
+bool goingToChipotleForLunch = cashInWallet > 6.00;
+```
+
+> 1. Fewer Lines
+> 2. No separate initialization
+> 3. No repitition
+> 4. Reads like speech
+
 ### Positive Conditionals
+> Don't be Anti-negative
+> In other words, use positive conditionals.
+- Dirty
+```
+if (!isNotLoggedIn)
+```
+- Clean
+
+```
+if (loggedIn)
+```
+
 ### Ternary Elegance
+
+- Dirty
+```
+int registrationFee;
+
+if ( isSpeaker) {
+    registrationFee = 0;
+} else {
+    regitrationFee = 50;
+}
+```
+- Clean
+
+```
+int registrationFee = isSpeaker ? 0 : 50;
+```
+
 ### Stringly Typed
+- Dirty
+```
+if (employeeType == "manager")
+```
+- Clean
+
+```
+if (employee.Type === EmployeeType.Manager)
+```
+
 ### Magic Numbers
+
+- Dirty
+```
+if (age > 21) {}
+
+if (status === 2) {}
+```
+- Clean
+
+```
+const int legalDrinkingAge = 21;
+if (age > legalDrinkingAge) { // body here}
+
+if (status === Status.Active) {}
+```
+
 ### Complex Conditionals
+- Dirty
+```
+if (car.Year > 1980
+    && (car.Make === 'Ford' || car.Make === 'Chevrolet')
+    && car.Odometer < 100000
+    && car.Vin.StartsWith('V2') || car.Vin.StartsWith('IA3'))
+    {
+        // do lof of things here
+    }
+
+if (employee.Age > 55
+    && employee.YearsEMployed > 10
+    && employee.isRetired === true) 
+{
+ // do things   
+}
+
+if ((fileExtension === 'mp4' ||
+    fileExtension === 'mpg' ||
+    fileExtension === 'avi)
+    && (isAdmin || isActiveFile)) {}
+```
+- Clean
+
+```
+// Intermediate Variable
+bool eligibleForPension = employee.Age > 55
+    && employee.YearsEMployed > 10 && employee.isRetired === true;
+
+// Encapsulate via function
+
+if (ValidFileRequest(fileExtension, isActiveFile, isAdmin))
+
+private bool ValidFileRequest ( string fileExtension, bool isActiveFile, bool isAdmin) {
+    return (fileExtension === 'mp4' ||
+        fileExtension === 'mpg' ||
+        fileExtension === 'avi)
+        && (isAdmin || isActiveFile);
+}
+```
+
 ### Polymorphism vs Enums
+- Dirty
+```
+private void LoginUser(User user) 
+{
+    switch (user.Status)
+    {
+        case Status.Active:
+            // active user's logic
+            break;
+        case Status.Inactive:
+            // inactive user's logic
+            break;
+        case Status.Locked:
+            // locked user's logic
+            break;
+    }
+}
+```
+- Clean
+
+```
+private void LoginUser(User user)
+{
+    user.Login();
+}
+
+private abstract class User
+{
+    public string FirstName;
+    public string LastName;
+    public Status status;
+    public int AccountBalance;
+
+    public abstract void login();
+
+}
+
+private class ActiveUser : User
+{
+    public void Login() {
+        // Active user logic here
+    }
+}
+
+private class InactiveUser : User
+{
+    public void Login() {
+        // Inactive user logic here
+    }
+}
+
+private class LockedUser : User
+{
+    public void Login() {
+        // Locked user logic here
+    }
+}
+
+```
+
 ### Be Declarative
+- Dirty
+```
+List<User> matchingUsers = new List<User>();
+
+foreach (var user in users)
+{
+    if (user.AccountBalance <minimumAccountBalance
+        && user.Status == Status.Active)
+    {
+        matchingUsers.Add(user);
+    }
+
+    return matchingUsers;
+}
+```
+- Clean
+
+```
+return users
+    .Where(u => u.AccountBalance < minimumAccountBalance)
+    .Where(u => u.Status == Status.Active)
+
+```
+
 ### Table Driven Methods
+- Dirty
+```
+if (age < 20)
+{
+    return 345.60;
+}
+else if (age < 30)
+{
+    return 419.5;
+}
+else if (age < 40)
+{
+    return 478.36;
+}
+else if (age < 50)
+{
+    return 516.25;
+}
+
+```
+- Clean
+
+| InsuranceRateId | MaximumAge | Rate |
+|:---:|:---:|:---:|
+| 1 | 20 | 346.60 |
+| 2 | 30 | 420.50 |
+| 3 | 40 | 476.38 |
+| 4 | 50 | 516.25 |
+```
+return Repository.GetInsuranceRate(age)
+```
 
 ## Functions
 ## Classes
