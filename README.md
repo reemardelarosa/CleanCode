@@ -781,7 +781,246 @@ private void SaveThePlanet()
 ```
 
 ## Classes
+### When to create a class?
+- New Concept, Abstract or real-world
+- Low Cohesion, Methods should relate
+- Promote Reuse, Small - targeted => reuse
+- Reduce Complexity, Solve once, hide away
+- Clarify parameters, Identify a group of data
 ## Comments
+1. Prefer expressive code over comments.
+2. Use comments when code alone can't be sufficient.
+
+### Redundant
+1. Assume your reader can read code
+2. Don't repeat yourself
+- Dirty
+```c#
+int i = 1; // Set i = 1
+
+var cory = new User(); // Instantiate a new user
+
+/// <summary>
+/// Default Constructor
+/// </summary>
+public User() {}
+
+/// <summary>
+/// Calculates Total Charges
+/// </summary>
+public void CalculateTotalCharges() {}
+
+```
+
+
+### Intent
+> Instead, clarify intent in code
+1. Improved function naming
+2. Intermediate variable
+3. Constant or enum
+4. Extract conditonal to function
+```c#
+// Assure user's account is deactivated
+if (user.Status == 2)
+
+```
+
+- Clean
+```c#
+if (user.Status == Status.Inactive)
+```
+### Apologies and Warnings
+1. Apologies
+- Dirty
+```c#
+// Sorry, this crashes a lot so I'm jst swallowing the exception
+
+// I was too tired to refactor this pile
+// of spghetti code when I was done
+
+```
+
+- Clean
+```c#
+// Don't apologize.
+// 1. Fix it before commit/merge
+// 2. Add TODO marker comment if you must
+
+```
+
+2. Warnings
+- Dirty
+```c#
+// Here be dragons - See bob
+
+// Great sins against code
+// begin here...
+
+```
+
+- Clean
+```c#
+// TO avoid warning, refactor.
+
+```
+### Zombie Code
+#### Common Causes
+1. Risk Aversion
+2. Hoarding Mentality
+#### Optimize Signal to Noise Ratio
+1. Remove unnecessary codes that are comment out.
+#### Problems
+1. Reduces readability
+2. Creates ambiguity
+3. Hinders refactoring
+4. Add moise to searches
+5. Code isn't loss anyway
+
+### Dividers and Brace Trackers
+- Dirty
+```c#
+private void MyLongFunction()
+{
+    lots
+    of
+    code
+
+    // Start search for available concert tickets
+
+    lots
+    of
+    concert
+    search
+    code
+
+    // End of concert ticket search
+
+    lots
+    more
+    code
+
+    // Needs comments to divide function sections? Refactor
+}
+
+private void AuthenticateUsers()
+{
+    bool validLogin = false;
+    // deeply
+        // nested
+            // code
+
+            if (validLogin)
+            {
+                // lots
+                // of
+                // code
+                // to 
+                // log
+                // user
+                // in
+            } // end user login
+        //even
+    // more code
+}
+
+```
+
+- Clean
+```c#
+private void MyShortFunction()
+{
+    function1();
+    functionsSearch();
+    function2();
+}
+
+private void AuthenticateUsers()
+{
+    bool validLogin = false;
+    // deeply
+        // nested
+            // code
+
+            if (validLogin)
+            {
+                LoginUser();
+            }
+        //even
+    // more code
+}
+
+
+```
+### Bloated Header
+1. Avoid line endings
+2. Don't repeat yourself
+3. Follow Conventions
+- Dirty
+```c#
+// ******************************************
+// Filename: Monolith.cs                    *
+//                                          *
+// Author: Reemar                           *
+// Created: 05/13/2018                      *
+// Weather that day: Sunny                  *
+//                                          *
+// Summary                                  *
+// Blah blah blahhhhhhhhhhhhhhhhhhhhhhhh    *
+// Blah blah blahhhhhhhhhhhhhhhhhhhhhhhh    *
+// Blah blah blahhhhhhhhhhhhhhhhhhhhhhhh    *
+// Blah blah blahhhhhhhhhhhhhhhhhhhhhhhh    *
+// ******************************************
+
+```
+
+- Clean
+```c#
+
+```
+### Defect Log
+1. Change metadata belongs in source control
+- Dirty
+```c#
+// Defect #5374 DA 12/10/2010
+// We weren't checking for null here
+if (FirstName != null)
+{
+
+}
+
+```
+
+### Clean Comments
+1. To do
+    - Standardize
+    - Watch out
+        - May be an apology or warning comment in disguise
+        - Often ignored
+2. Summary
+    - Describe intent at general lvel higher than the code
+    - Often useful to provide high level overview of class
+    - Risk: Don't use to simply augment poor naming/code level intent
+
+3. Documentation
+    - Only when it can't be expressed in code
+
+- Clean
+```c#
+// see www.facebook.com/api for documentation
+```
+
+### About to write a comment?
+- Ask yourself
+    - Could I express what I'm about to type in *code*?
+        - Intermediate variable, elminate magic number, utilize enum?
+        - Refactor to a well-name method
+            - Separate scope
+            - More likely to stay updated
+            - Better readability
+
+    - Am I explaining bad code I've just written instead of refactoring?
+    - Should this simply be a message in a source control commit?
+
 ## Demo
 ## Stay Clean
 
